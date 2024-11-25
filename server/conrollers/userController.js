@@ -17,6 +17,7 @@ const clerkWebHooks = async (req, res) => {
         "svix-signature": req.headers["svix-signature"],
       };
     const { data, type } = req.body;
+    // console.log(data);
     switch (type) {
       case "user.created": {
         const userData = {
@@ -26,6 +27,7 @@ const clerkWebHooks = async (req, res) => {
           lastName: data.last_name,
           photo: data.image_url,
         };
+        console.log(userData.photo)
         await userModel.create(userData);
         res.json({});
         break;
@@ -52,7 +54,7 @@ const clerkWebHooks = async (req, res) => {
       }
     }
   } catch (error) {
-    console.error("Error verifying webhook:", error);
+    console.error("Error verifying webhook:", error.message);
     return res.json({ success: false, message: "Invalid webhook signature" });
   }
 };
