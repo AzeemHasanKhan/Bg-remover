@@ -1,7 +1,6 @@
 import { Webhook } from "svix";
 import userModel from "../models/userModel.js";
 
-
 //api controller function to manage clerk user with data base
 
 // http://localhost:4000/api/user/webhooks
@@ -10,12 +9,11 @@ const clerkWebHooks = async (req, res) => {
   try {
     //creta svix instance with clerk webhook
     const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
-    await whook.verify(JSON.stringify),
-      {
-        "svix-id": req.headers["svix-id"],
-        "svix-timestamp": req.headers["svix-timestamp"],
-        "svix-signature": req.headers["svix-signature"],
-      };
+    await whook.verify(JSON.stringify(req.body), {
+      "svix-id": req.headers["svix-id"],
+      "svix-timestamp": req.headers["svix-timestamp"],
+      "svix-signature": req.headers["svix-signature"],
+    });
     const { data, type } = req.body;
     // console.log(data);
     switch (type) {
@@ -27,7 +25,7 @@ const clerkWebHooks = async (req, res) => {
           lastName: data.last_name,
           photo: data.image_url,
         };
-        console.log(userData.photo)
+        console.log(userData.photo);
         await userModel.create(userData);
         res.json({});
         break;
@@ -59,5 +57,4 @@ const clerkWebHooks = async (req, res) => {
   }
 };
 
-
-export {clerkWebHooks}
+export { clerkWebHooks };

@@ -13,6 +13,7 @@ const Home = () => {
       <BgSlider />
       <Testimonials/>
       <Upload/>
+      
     </div>
   );
 };
